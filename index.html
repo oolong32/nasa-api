@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>NASA api – Test</title>
+	<script src="https://code.jquery.com/jquery-git2.min.js"></script>
+</head>
+<body>
+  <h1>Latest APOD Image</h1>
+  <a class="apod-link"></a>
+  <img class="apod-img">
+	<p class="apod-txt"></p>
+  <p class="apod-date"></p>
+  <script>
+
+    var api_url = 'https://api.nasa.gov/planetary/apod';
+    var api_key = 'rf4R92v9S4FC07YPo8AD3A2YiWuSeZmVr43TcfHl';
+    var format = 'JSON';
+    var api_call = api_url + '?api_key=' + api_key + '&format=' + format;
+    //+ '&date=' + api_date +
+    $(document).ready(function() {
+      $.getJSON( api_call, function (data) {
+          $('h1').html(data.title);
+          // check if image
+          if (data.media_type === 'image') {
+            $('.apod-link').remove(); // remove link-tag
+            $('.apod-img').attr('src', data.url); // display image
+          } else {
+            // remove img-tag
+            $('.apod-img').remove();
+            $('.apod-link').attr('href', data.url);
+            // eleganter wäre (zusätzlich?) eine rekursive funktion, die solange zurückgeht, bis ein bild gefunden wird …
+          }
+          $('.apod-link').html(data.url);
+          $('.apod-txt').html(data.explanation);
+          $('.apod-date').html(data.date);
+      });
+    });
+
+  </script>
+</body>
+</html>
